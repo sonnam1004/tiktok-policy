@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>TikTok OAuth Callback</title></head>
+<body>
+<h2>Authorization Complete</h2>
+<p>Copy the URL below and paste it into your tool, or wait for redirect:</p>
+<textarea id="url" rows="3" style="width:100%;font-family:monospace;font-size:12px;" readonly></textarea>
+<script>
+(function() {
+  var full = window.location.href;
+  document.getElementById('url').value = full;
+
+  // Auto-redirect to local tool
+  var code = new URLSearchParams(window.location.search).get('code');
+  if (code) {
+    var localUrl = 'http://127.0.0.1:8765/callback?code=' + code +
+                   '&state=' + (new URLSearchParams(window.location.search).get('state') || '') +
+                   '&scopes=' + (new URLSearchParams(window.location.search).get('scopes') || '');
+    setTimeout(function() {
+      window.location.href = localUrl;
+    }, 1500);
+  }
+})();
+</script>
+</body>
+</html>
